@@ -91,7 +91,7 @@ module.exports.getKeyRing = function(keypass, callback) {
     return callback(keyring);
   }
 
-  var description = storj.utils.existsSync(DATADIR) ?
+  var description = storj.utils.existsSync(path.join(DATADIR, 'key.ring')) ?
                     'Enter your passphrase to unlock your keyring' :
                     'Enter a passphrase to protect your keyring';
 

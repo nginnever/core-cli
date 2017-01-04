@@ -14,7 +14,6 @@ var monitor = require('os-monitor');
  * @constructor
  * @license AGPL-3.0
  * @param {BridgeClient} client - Authenticated Bridge Client with Storj API.
- * @param {String} keypass - Password for unlocking keyring.
  * @param {Number} options.env.concurrency - shard upload concurrency.
  * @param {Number} options.env.fileconcurrency - File upload concurrency.
  * @param {String} options.bucket - Bucket files are uploaded to.
@@ -37,7 +36,7 @@ function Uploader(client, bucket, options) {
       requestTimeout: 10000
     }
   );
-  this.keypass = options.keypass;
+  this.keypass = null;
   this.filepaths = this._getAllFiles(options.filepath);
   this.fileCount = this.filepaths.length;
   this.uploadedCount = 0;

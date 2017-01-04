@@ -34,7 +34,6 @@ program.version(
 );
 program.option('-u, --url <url>', 'set the base url for the api');
 program.option('-n, --byname', 'treat ids as names');
-program.option('-k, --keypass <password>', 'unlock keyring without prompt');
 program.option('-d, --debug', 'display debug data', 4);
 
 program._storj.loglevel = function() {
@@ -133,7 +132,7 @@ var ACTIONS = {
     bucket = program._storj.getRealBucketId(bucket, env.user);
     var options = {
       filepath: filepath,
-      keypass: program._storj.getKeyPass(),
+      keypass: null,
       env: env
     };
     var uploader;
@@ -244,6 +243,7 @@ program
 program
   .command('remove-bucket <bucket-id>')
   .option('-f, --force', 'skip confirmation prompt')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('destroys a specific storage bucket')
   .action(actions.buckets.remove.bind(program));
 
@@ -256,6 +256,7 @@ program
   .command('make-public <bucket-id>')
   .option('--pull', 'make PULL operations public')
   .option('--push', 'make PUSH operations public')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('makes a specific storage bucket public, ' +
     'uploading bucket key to bridge')
   .action(actions.buckets.makePublic.bind(program));
@@ -283,6 +284,7 @@ program
 
 program
   .command('export-keyring <directory>')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('compresses and exports keyring to specific directory')
   .action(utils.exportkeyring.bind(program));
 
@@ -309,6 +311,7 @@ program
 program
   .command('remove-file <bucket-id> <file-id>')
   .option('-f, --force', 'skip confirmation prompt')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('delete a file pointer from a specific bucket')
   .action(actions.files.remove.bind(program));
 
@@ -324,6 +327,7 @@ program
   .command('download-file <bucket-id> <file-id> <filepath>')
   .option('-x, --exclude <nodeID,nodeID...>', 'mirrors to create for file', '')
   .option('-u, --user <user>', 'user id for public name resolution', null)
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('download a file from the network with a pointer from a bucket')
   .action(ACTIONS.download);
 
@@ -369,13 +373,15 @@ program
 
 program
   .command('change-keyring')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('change the keyring password')
   .action(utils.changekeyring.bind(program));
 
-  program
-    .command('reset-keyring')
-    .description('delete the current keyring and start a new one')
-    .action(utils.resetkeyring.bind(program));
+program
+  .command('reset-keyring')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
+  .description('delete the current keyring and start a new one')
+  .action(utils.resetkeyring.bind(program));
 
 program
   .command('sign-message <privatekey> <message>')
@@ -386,6 +392,7 @@ program
 program
   .command('stream-file <bucket-id> <file-id>')
   .option('-x, --exclude <nodeID,nodeID...>', 'mirrors to create for file', '')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('stream a file from the network and write to stdout')
   .action(actions.files.stream.bind(program));
 
@@ -396,21 +403,25 @@ program
 
 program
   .command('generate-seed')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('generates new deterministic seed')
   .action(actions.seed.generateSeed.bind(program));
 
 program
   .command('print-seed')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('prints the human readable deterministic seed')
   .action(actions.seed.printSeed.bind(program));
 
 program
   .command('import-seed')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('imports deterministic seed from another device')
   .action(actions.seed.importSeed.bind(program));
 
 program
   .command('delete-seed')
+  .option('-k, --keypass <password>', 'unlock keyring without prompt')
   .description('deletes the deterministic seed from the keyring')
   .action(actions.seed.deleteSeed.bind(program));
 

@@ -90,7 +90,7 @@ describe('uploader', function() {
         transferConcurrency: testOptions.env.concurrency,
         requestTimeout: 10000
       })).to.equal(true);
-      expect(uploader.keypass).to.equal(testOptions.keypass);
+      expect(uploader.keypass).to.equal(null);
       expect(uploader.filepaths).to.equal(testFiles);
       expect(uploader.fileCount).to.equal(testFiles.length);
       expect(uploader.uploadedCount).to.equal(0);
